@@ -1,3 +1,6 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -49,11 +52,14 @@ public class ExtractJSONTags extends AnAction {
     }
 
     String extractJSONTag(String line) {
+        System.out.println("Matching line " + line);
         Pattern p = Pattern.compile("`.*json:\"(.*)\".*`");
         Matcher m = p.matcher(line);
+        m.find();
         try {
-            return m.group(0);
-        } catch (IndexOutOfBoundsException e) {
+            return m.group(1);
+        } catch (IndexOutOfBoundsException | IllegalStateException e) {
+            System.out.printf("Error getting group: %s\n", e.getMessage());
             return null;
         }
     }
@@ -70,11 +76,15 @@ public class ExtractJSONTags extends AnAction {
             currentLine = getLineAtLineNumber(editor, lineNumber);
         }
 
+        JsonObject jsonObject = new JsonObject();
         for (String line:lines) {
             String tag = extractJSONTag(line);
             if (tag != null) {
-
+                jsonObject.addProperty(tag, "");
             }
         }
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        System.out.println(gson.toJson(jsonObject));
     }
 }
