@@ -1,0 +1,27 @@
+<idea-plugin>
+    <id>com.evansalter.extract-json-tags</id>
+    <name>Extract JSON Tags</name>
+    <vendor email="support@evansalter.com" url="http://www.evansalter.com">Evan Salter</vendor>
+
+    <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <action id="ExtractJSONTags" class="ExtractJSONTags" text="Extract JSON Tags"
+                description="Extract the JSON tags from the selected type struct">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
