@@ -4,35 +4,39 @@ import com.google.gson.JsonObject;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExtractJSONTags extends AnAction {
-    public ExtractJSONTags() {
-        super("Hello");
-    }
 
     @Override
     public void update(AnActionEvent e) {
         final Project project = e.getProject();
         final Editor editor = e.getData(CommonDataKeys.EDITOR);
 
-        e.getPresentation().setVisible(project != null && editor != null);
+        boolean isVisible = false;
+        if (project != null && editor != null) {
+            String line = getLineAtCaret(editor);
+            isVisible = isStructType(line);
+        }
+        e.getPresentation().setVisible(isVisible);
     }
 
-    int getLineNum(Editor editor) {
+    private int getLineNum(Editor editor) {
         return editor.getCaretModel().getPrimaryCaret().getLogicalPosition().line;
     }
 
-    String getLine(Document document, int start, int end) {
+    private String getLine(Document document, int start, int end) {
         return document.getText(new TextRange(start, end));
     }
 
-    String getLineAtLineNumber(Editor editor, int lineNum) {
+    private String getLineAtLineNumber(Editor editor, int lineNum) {
         final Document document = editor.getDocument();
         int lineStartOffset = document.getLineStartOffset(lineNum);
         int lineEndOffset = document.getLineEndOffset(lineNum);
@@ -41,21 +45,23 @@ public class ExtractJSONTags extends AnAction {
         return line;
     }
 
-    String getLineAtCaret(Editor editor) {
+    private String getLineAtCaret(Editor editor) {
         int lineNum = getLineNum(editor);
         return getLineAtLineNumber(editor, lineNum);
     }
 
-    boolean isStructType(String line) {
-        Pattern p = Pattern.compile("type (.*) struct");
-        return p.matcher(line).matches();
+    private boolean isStructType(String line) {
+        Pattern p = Pattern.compile("type .* struct");
+        return p.matcher(line).find();
     }
 
-    String extractJSONTag(String line) {
+    private String extractJSONTag(String line) {
         System.out.println("Matching line " + line);
         Pattern p = Pattern.compile("`.*json:\"(.*)\".*`");
         Matcher m = p.matcher(line);
-        m.find();
+        if (!m.find()) {
+            return null;
+        }
         try {
             return m.group(1);
         } catch (IndexOutOfBoundsException | IllegalStateException e) {
@@ -85,6 +91,7 @@ public class ExtractJSONTags extends AnAction {
         }
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println(gson.toJson(jsonObject));
+        StringSelection data = new StringSelection(gson.toJson(jsonObject));
+        CopyPasteManager.getInstance().setContents(data);
     }
 }
