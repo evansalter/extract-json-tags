@@ -4,14 +4,33 @@
     <vendor email="support@evansalter.com" url="http://www.evansalter.com">Evan Salter</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    Extract JSON Tags is a plugin for GoLand that allows you to easily construct JSON bodies that correspond to a given
+    struct type. It relies on <code>json</code> tags to construct the request.
+
+    <h3>Basic Usage</h3>
+
+    Given the following type...
+    <br><br>
+    <code>
+        type Example struct {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Email       string `json:"email"`<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;PhoneNumber string `json:"phone_number"`<br>
+        }
+    </code>
+    <br><br>
+    ...right-click on the type name (i.e. <code>Example</code>) and choose "Extract JSON Tags".  The following JSON
+    string will be copied to your clipboard:
+    <br><br>
+    <code>
+        {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;"email": "",<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;"phone_number": ""<br>
+        }
+    </code>
     ]]></description>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
+    <!--
+    <depends>com.intellij.modules.go</depends>
     -->
 
     <extensions defaultExtensionNs="com.intellij">
