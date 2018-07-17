@@ -1,6 +1,8 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -71,6 +73,7 @@ public class ExtractJSONTags extends AnAction {
     }
 
     public void actionPerformed(AnActionEvent e) {
+        final Project project = e.getProject();
         final Editor editor = e.getData(CommonDataKeys.EDITOR);
 
         int lineNumber = getLineNum(editor) + 1;
@@ -93,5 +96,8 @@ public class ExtractJSONTags extends AnAction {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         StringSelection data = new StringSelection(gson.toJson(jsonObject));
         CopyPasteManager.getInstance().setContents(data);
+
+        Notification n = new Notification("Extract JSON Tags", "JSON string copied to clipboard.", "", NotificationType.INFORMATION);
+        n.notify(project);
     }
 }
