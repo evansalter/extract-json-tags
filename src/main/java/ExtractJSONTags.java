@@ -8,6 +8,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.TextRange;
 
 import java.awt.datatransfer.StringSelection;
@@ -72,6 +73,7 @@ public class ExtractJSONTags extends AnAction {
         }
     }
 
+    @Override
     public void actionPerformed(AnActionEvent e) {
         final Project project = e.getProject();
         final Editor editor = e.getData(CommonDataKeys.EDITOR);
@@ -91,6 +93,11 @@ public class ExtractJSONTags extends AnAction {
             if (tag != null) {
                 jsonObject.addProperty(tag, "");
             }
+        }
+        if (jsonObject.keySet().size() == 0) {
+            String msg = "No fields with JSON tags found.";
+            Messages.showMessageDialog(msg, "Extract JSON Tags", Messages.getInformationIcon());
+            return;
         }
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
