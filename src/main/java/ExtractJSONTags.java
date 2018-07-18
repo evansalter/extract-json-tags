@@ -31,7 +31,7 @@ public class ExtractJSONTags extends AnAction {
         e.getPresentation().setVisible(isVisible);
     }
 
-    private int getLineNum(Editor editor) {
+    private int getCurrentLineNum(Editor editor) {
         return editor.getCaretModel().getPrimaryCaret().getLogicalPosition().line;
     }
 
@@ -49,7 +49,7 @@ public class ExtractJSONTags extends AnAction {
     }
 
     private String getLineAtCaret(Editor editor) {
-        int lineNum = getLineNum(editor);
+        int lineNum = getCurrentLineNum(editor);
         return getLineAtLineNumber(editor, lineNum);
     }
 
@@ -59,7 +59,6 @@ public class ExtractJSONTags extends AnAction {
     }
 
     private String extractJSONTag(String line) {
-        System.out.println("Matching line " + line);
         Pattern p = Pattern.compile("`.*json:\"(.*)\".*`");
         Matcher m = p.matcher(line);
         if (!m.find()) {
@@ -73,12 +72,8 @@ public class ExtractJSONTags extends AnAction {
         }
     }
 
-    @Override
-    public void actionPerformed(AnActionEvent e) {
-        final Project project = e.getProject();
-        final Editor editor = e.getData(CommonDataKeys.EDITOR);
-
-        int lineNumber = getLineNum(editor) + 1;
+    private ArrayList<String> getLinesOfStruct(Editor editor) {
+        int lineNumber = getCurrentLineNum(editor) + 1;
         String currentLine = getLineAtLineNumber(editor, lineNumber);
         ArrayList<String> lines = new ArrayList<>();
         while (!currentLine.contains("}")) {
@@ -87,6 +82,10 @@ public class ExtractJSONTags extends AnAction {
             currentLine = getLineAtLineNumber(editor, lineNumber);
         }
 
+        return lines;
+    }
+
+    private JsonObject constructJSONObject(ArrayList<String> lines) {
         JsonObject jsonObject = new JsonObject();
         for (String line:lines) {
             String tag = extractJSONTag(line);
@@ -94,17 +93,37 @@ public class ExtractJSONTags extends AnAction {
                 jsonObject.addProperty(tag, "");
             }
         }
+        return jsonObject;
+    }
+
+    private boolean checkJSONObject(JsonObject jsonObject) {
         if (jsonObject.keySet().size() == 0) {
             String msg = "No fields with JSON tags found.";
             Messages.showMessageDialog(msg, "Extract JSON Tags", Messages.getInformationIcon());
-            return;
+            return false;
         }
+        return true;
+    }
 
+    private void copyJSONObjectToClipboard(Project project, JsonObject jsonObject) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         StringSelection data = new StringSelection(gson.toJson(jsonObject));
         CopyPasteManager.getInstance().setContents(data);
 
         Notification n = new Notification("Extract JSON Tags", "JSON string copied to clipboard.", "", NotificationType.INFORMATION);
         n.notify(project);
+    }
+
+    @Override
+    public void actionPerformed(AnActionEvent e) {
+        final Project project = e.getProject();
+        final Editor editor = e.getData(CommonDataKeys.EDITOR);
+
+        ArrayList<String> lines = getLinesOfStruct(editor);
+        JsonObject jsonObject = constructJSONObject(lines);
+        if (!checkJSONObject(jsonObject)) {
+            return;
+        }
+        copyJSONObjectToClipboard(project, jsonObject);
     }
 }
