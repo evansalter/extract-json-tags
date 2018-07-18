@@ -13,7 +13,7 @@
     <br><br>
     <code>
         type Example struct {<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;Email       string `json:"email"`<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; string `json:"email"`<br>
             &nbsp;&nbsp;&nbsp;&nbsp;PhoneNumber string `json:"phone_number"`<br>
         }
     </code>
