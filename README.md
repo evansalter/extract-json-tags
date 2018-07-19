@@ -4,7 +4,7 @@
 
 # Installation
 
-TODO
+Download the plugin from the [JetBrains Plugin Repository](https://plugins.jetbrains.com/plugin/10943-extract-json-tags) or search for "Extract JSON Tags" GoLand's plugin settings.
 
 # Usage
 
