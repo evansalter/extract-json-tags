@@ -1,5 +1,6 @@
-# extract-json-tags
-Extracts a JSON request object from a GoLang struct type in GoLand
+# Introduction
+
+`extract-json-tags` is a plugin for GoLand by JetBrains that helps you create JSON request bodies for your Go servers using Go's struct tags.
 
 # Installation
 
