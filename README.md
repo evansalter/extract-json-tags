@@ -12,19 +12,19 @@ Given a Go `type struct` with JSON tags...
 
 ```go
 type Person struct {
-  FirstName string `json:"first_name"`
-  LastName  string `json:"last_name"`
-  Age       int    `json:"age"`
+    FirstName string `json:"first_name"`
+    LastName  string `json:"last_name"`
+    Age       int    `json:"age"`
 }
 ```
 
 ...right-click on `Person` and choose "Extract JSON Tags". The following JSON object will be copied to your clipboard:
 
-```json
+```js
 {
-  "first_name": "",
-  "last_name": "",
-  "age": ""
+    "first_name": "",
+    "last_name": "",
+    "age": ""
 }
 ```
 
