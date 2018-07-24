@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.evansalter'
-version '0.1.0'
+version '0.1.1'
 
 sourceCompatibility = 1.8
 
@@ -26,4 +26,8 @@ patchPluginXml {
             <li>Initial version
         </ul>
       """
+}
+publishPlugin {
+    username intellijPublishUsername
+    password intellijPublishPassword
 }

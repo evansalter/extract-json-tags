@@ -29,9 +29,7 @@
     </code>
     ]]></description>
 
-    <!--
-    <depends>com.intellij.modules.go</depends>
-    -->
+    <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
