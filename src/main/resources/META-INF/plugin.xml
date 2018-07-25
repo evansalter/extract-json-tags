@@ -3,12 +3,14 @@
     <name>Extract JSON Tags</name>
     <vendor email="support@evansalter.com" url="http://www.evansalter.com">Evan Salter</vendor>
 
+    <idea-version since-build="181.0" />
+
     <description><![CDATA[
     Extract JSON Tags is a plugin for GoLand that allows you to easily construct JSON bodies that correspond to a given
     struct type. It relies on <code>json</code> tags to construct the request.
-
+    <br><br>
     <h3>Basic Usage</h3>
-
+    <br>
     Given the following type...
     <br><br>
     <code>

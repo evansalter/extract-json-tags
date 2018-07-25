@@ -23,7 +23,7 @@ patchPluginXml {
     changeNotes """
         <h3>Version 0.1.1</h3>
         <ul>
-            <li>Refine supported IDEs
+            <li>Set supported versions
         </ul>
         <h3>Version 0.1.0</h3>
         <ul>
