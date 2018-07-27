@@ -58,18 +58,24 @@ public class ExtractJSONTags extends AnAction {
         return p.matcher(line).find();
     }
 
-    private String extractJSONTag(String line) {
+    protected String extractJSONTag(String line) {
         Pattern p = Pattern.compile("`.*json:\"(.*)\".*`");
         Matcher m = p.matcher(line);
         if (!m.find()) {
             return null;
         }
+        String tag;
         try {
-            return m.group(1);
+            tag = m.group(1);
         } catch (IndexOutOfBoundsException | IllegalStateException e) {
             System.out.printf("Error getting group: %s\n", e.getMessage());
             return null;
         }
+        String[] parts = tag.split("[, ]");
+        if (parts.length > 1) {
+            return parts[0];
+        }
+        return tag;
     }
 
     private ArrayList<String> getLinesOfStruct(Editor editor) {
