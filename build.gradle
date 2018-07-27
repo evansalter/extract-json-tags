@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.evansalter'
-version '0.1.1'
+version '0.1.2'
 
 sourceCompatibility = 1.8
 
@@ -16,11 +16,13 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-intellij {
-    version '2018.1.6'
-}
 patchPluginXml {
+    sinceBuild "181.1"
     changeNotes """
+        <h3>Version 0.1.2</h3>
+        <ul>
+            <li>Fix issue with multiple values in a `json` tag
+        </ul>
         <h3>Version 0.1.1</h3>
         <ul>
             <li>Set supported versions
