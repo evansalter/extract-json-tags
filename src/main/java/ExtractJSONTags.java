@@ -58,7 +58,7 @@ public class ExtractJSONTags extends AnAction {
         return p.matcher(line).find();
     }
 
-    protected String extractJSONTag(String line) {
+    String extractJSONTag(String line) {
         Pattern p = Pattern.compile("`.*json:\"(.*)\".*`");
         Matcher m = p.matcher(line);
         if (!m.find()) {
@@ -91,7 +91,7 @@ public class ExtractJSONTags extends AnAction {
         return lines;
     }
 
-    private JsonObject constructJSONObject(ArrayList<String> lines) {
+    JsonObject constructJSONObject(ArrayList<String> lines) {
         JsonObject jsonObject = new JsonObject();
         for (String line:lines) {
             String tag = extractJSONTag(line);
@@ -102,7 +102,7 @@ public class ExtractJSONTags extends AnAction {
         return jsonObject;
     }
 
-    private boolean checkJSONObject(JsonObject jsonObject) {
+    boolean checkJSONObject(JsonObject jsonObject) {
         if (jsonObject.keySet().size() == 0) {
             String msg = "No fields with JSON tags found.";
             Messages.showMessageDialog(msg, "Extract JSON Tags", Messages.getInformationIcon());

@@ -1,4 +1,8 @@
+import com.google.gson.JsonObject;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class ExtractJSONTagsTest {
@@ -46,4 +50,38 @@ public class ExtractJSONTagsTest {
 
     }
 
+    public static class constructJSONObjectTest {
+
+        @Test
+        public void testReturnsEmptyObjectIfPassInEmptyArray() {
+            ArrayList<String> input = new ArrayList<>();
+            JsonObject expected = new JsonObject();
+            JsonObject actual = new ExtractJSONTags().constructJSONObject(input);
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void testReturnsObjectWithTagsAsKeysAndEmptyStringValues() {
+            ArrayList<String> input = new ArrayList<>();
+            input.add("FirstName   `json:\"first_name\"`");
+            input.add("LastName    `json:\"last_name\"`");
+            JsonObject expected = new JsonObject();
+            expected.addProperty("first_name", "");
+            expected.addProperty("last_name", "");
+            JsonObject actual = new ExtractJSONTags().constructJSONObject(input);
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void testHandlesDuplicateInput() {
+            ArrayList<String> input = new ArrayList<>();
+            input.add("FirstName   `json:\"first_name\"`");
+            input.add("FirstName   `json:\"first_name\"`");
+            JsonObject expected = new JsonObject();
+            expected.addProperty("first_name", "");
+            JsonObject actual = new ExtractJSONTags().constructJSONObject(input);
+            assertEquals(expected, actual);
+        }
+
+    }
 }
