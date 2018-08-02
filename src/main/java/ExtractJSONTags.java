@@ -59,7 +59,7 @@ public class ExtractJSONTags extends AnAction {
     }
 
     String extractJSONTag(String line) {
-        Pattern p = Pattern.compile("`.*json:\"(.*)\".*`");
+        Pattern p = Pattern.compile("`.*json:\"(.*?)\".*`");
         Matcher m = p.matcher(line);
         if (!m.find()) {
             return null;

@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.evansalter'
-version '0.1.2'
+version '0.1.3'
 
 sourceCompatibility = 1.8
 
@@ -19,6 +19,10 @@ dependencies {
 patchPluginXml {
     sinceBuild "181.1"
     changeNotes """
+        <h3>Version 0.1.3</h3>
+        <ul>
+            <li>Update regex
+        </ul>
         <h3>Version 0.1.2</h3>
         <ul>
             <li>Fix issue with multiple values in a `json` tag

@@ -33,6 +33,14 @@ public class ExtractJSONTagsTest {
         }
 
         @Test
+        public void testReturnsTagIfGivenMultipleTagsWithJSONFirst() {
+            String input = "FirstName `json:\"first_name\" other:\"something\"`";
+            String expected = "first_name";
+            String actual = new ExtractJSONTags().extractJSONTag(input);
+            assertEquals(expected, actual);
+        }
+
+        @Test
         public void testReturnsTagIfMultipleCommaSeparatedValuesInJSONTag() {
             String input = "FirstName `json:\"first_name,something\"`";
             String expected = "first_name";
