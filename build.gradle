@@ -18,6 +18,7 @@ dependencies {
 
 patchPluginXml {
     sinceBuild "181.1"
+    untilBuild "190"
     changeNotes """
         <h3>Version 0.1.3</h3>
         <ul>
